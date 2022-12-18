@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cong_viec {
+  ma_cong_viec  Int         @id @default(autoincrement())
+  ten_cong_viec String?     @db.VarChar(255)
+  ngay_tao      DateTime?   @db.Date
+  mo_ta         String?     @db.VarChar(255)
+  id_nguoi_tao  Int?
+  ma_trang_thai Int?
+  is_remove     Boolean?    @default(false)
+  nguoi_dung    nguoi_dung? @relation(fields: [id_nguoi_tao], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cong_viec_ibfk_1")
+  trang_thai    trang_thai? @relation(fields: [ma_trang_thai], references: [ma_trang_thai], onDelete: NoAction, onUpdate: NoAction, map: "cong_viec_ibfk_2")
+
+  @@index([id_nguoi_tao], map: "id_nguoi_tao")
+  @@index([ma_trang_thai], map: "ma_trang_thai")
+}
+
+model nguoi_dung {
+  id            Int         @id @default(autoincrement())
+  ho_ten        String?     @db.VarChar(255)
+  email         String?     @db.VarChar(255)
+  mat_khau      String?     @db.VarChar(255)
+  ngay_sinh     DateTime?   @db.Date
+  hinh_dai_dien String?     @db.VarChar(255)
+  is_remove     Boolean?    @default(false)
+  cong_viec     cong_viec[]
+}
+
+model trang_thai {
+  ma_trang_thai  Int         @id @default(autoincrement())
+  ten_trang_thai String?     @db.VarChar(255)
+  is_remove      Boolean?    @default(false)
+  cong_viec      cong_viec[]
+}
