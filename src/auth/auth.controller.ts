@@ -1,5 +1,6 @@
 import { BadRequestException, Controller, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
-import { Body, Post } from '@nestjs/common/decorators';
+import { Body, Get, Post, UseGuards } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { NguoiDung } from './dto';
 
@@ -11,6 +12,12 @@ export class AuthController {
     ){}
 
     //login
+     @UseGuards(AuthGuard("jwt"))   
+     @Get()
+     demo():string{
+        return 'demo jwt'
+     }   
+
     @Post("login")
     async login(@Body() body:NguoiDung):Promise<string>{
       
