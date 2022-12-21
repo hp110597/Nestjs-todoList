@@ -1,4 +1,4 @@
-export interface NguoiDung {
+export interface NguoiDungDto {
     id: number
     ho_ten: string
     email: string
